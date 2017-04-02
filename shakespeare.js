@@ -4,7 +4,7 @@ var margin = {top: 20, right: 20, bottom: 50, left: 70},
     height = 500 - margin.top - margin.bottom;
 
 // parse the date / time
-var parseTime = d3.timeParse("%Y-%m-%d");
+var parseTime = d3.timeParse("%Y-%m");
 
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
@@ -13,11 +13,7 @@ var y = d3.scaleLinear().range([height, 0]);
 // define the line
 var valueline = d3.line()
     .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.close); });
-
-var valueline2 = d3.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.open); });
+    .y(function(d) { return y(d.value); });
 
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
@@ -30,20 +26,18 @@ var svg = d3.select(".vis").append("svg")
           "translate(" + margin.left + "," + margin.top + ")");
 
 // Get the data
-d3.csv("richard iii house of cards.csv", function(error, data) {
+d3.csv("shakespeare.csv", function(error, data) {
   if (error) throw error;
 
   // format the data
   data.forEach(function(d) {
       d.date = parseTime(d.date);
-      d.close = +d.close;
-      d.open = +d.open;
+      d.value = +d.value;
   });
 
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) {
-    return Math.max(d.close, d.open); })]);
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
   // Add the valueline path.
   svg.append("path")
@@ -51,17 +45,11 @@ d3.csv("richard iii house of cards.csv", function(error, data) {
       .attr("class", "line")
       .attr("d", valueline);
 
-  // Add the valueline2 path.
-  svg.append("path")
-      .data([data])
-      .attr("class", "line")
-      .style("stroke", "red")
-      .attr("d", valueline2);
-
   // Add the X Axis
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x)
+        .ticks(d3.timeMonth.every(4)));
 
   svg.append("text")             
       .attr("transform",
@@ -86,20 +74,6 @@ d3.csv("richard iii house of cards.csv", function(error, data) {
         .attr("y", 0 - (margin.top / 8))
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
-        .text("Interest in Richard III vs. House of Cards (2013)");
-
-  svg.append("text")
-    .attr("transform", "translate(" + (width-150) + "," + y(25) + ")")
-    .attr("dy", ".35em")
-    .attr("text-anchor", "start")
-    .style("fill", "red")
-    .text("House of Cards");
-
-  svg.append("text")
-    .attr("transform", "translate(" + (width-150) + "," + y(6) + ")")
-    .attr("dy", ".35em")
-    .attr("text-anchor", "start")
-    .style("fill", "steelblue")
-    .text("Richard III");
+        .text("Shakespeare (2010 - Current)");
 
 });
