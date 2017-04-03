@@ -80,5 +80,4 @@ d3.csv("no fear shakespeare.csv", function(error, data) {
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
         .text("No Fear Shakespeare (2010 - Current)");
-
 });
