@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 20, bottom: 50, left: 70},
-    width = 960 - margin.left - margin.right,
+    width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 // parse the date / time
@@ -25,6 +25,12 @@ var svg = d3.select(".vis").append("svg")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+var axis = d3.axisBottom(x)
+  .tickFormat(function(d) {
+    return d3.timeFormat("%b")(d) === "Jan" ? d3.timeFormat("%Y")(d) : d3.timeFormat("%b")(d);
+  })
+  .ticks(d3.timeMonth.every(4));
+
 // Get the data
 d3.csv("shakespeare.csv", function(error, data) {
   if (error) throw error;
@@ -48,8 +54,7 @@ d3.csv("shakespeare.csv", function(error, data) {
   // Add the X Axis
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x)
-        .ticks(d3.timeMonth.every(4)));
+      .call(axis)
 
   svg.append("text")             
       .attr("transform",
