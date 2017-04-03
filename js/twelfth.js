@@ -86,7 +86,7 @@ d3.csv("twelfth night shes the man.csv", function(error, data) {
         .attr("y", 0 - (margin.top / 8))
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
-        .text("Interest in Twelfth Night vs. She's The Man (2006)");
+        .text("Twelfth Night vs. She's The Man (2006)");
 
   svg.append("text")
     .attr("transform", "translate(" + (width-150) + "," + y(3.5) + ")")

@@ -87,7 +87,7 @@ d3.csv("festival2.csv", function(error, data) {
       .attr("y", 0 - (margin.top / 8))
       .attr("text-anchor", "middle")  
       .style("font-size", "16px") 
-      .text("Interest in Shakespeare Festivals vs. Music Festivals (2012 - Current)");
+      .text("Shakespeare Festivals vs. Music Festivals (2012 - Current)");
 
   svg.append("text")
     .attr("transform", "translate(" + (width-150) + "," + y(6) + ")")
